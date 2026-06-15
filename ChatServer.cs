@@ -53,4 +53,27 @@ public class ChatServer
         
         Console.WriteLine("서버가 종료되었습니다.");
     }
+    
+    // 클라이언 연결 (접속 요청) 비동기 처리
+    private async Task AcceptClientAsync()
+    {
+        Console.WriteLine("클라이언트 접속을 기다리는 중 ...");
+        // 무한 루프를 돌면서 접속 요청을 대기처리
+        while (_isRunning)
+        {
+            try
+            {
+                // 클라이언트의 연결 요청할 때 까지 대기
+                var client = await _listener!.AcceptTcpClientAsync();
+                
+                // 연결된 클라정보 출력
+                var endPoint = client.Client.RemoteEndPoint;
+                Console.WriteLine($"[연결] 클라이언트가 접속했습니다.: {endPoint}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+    }
 }

@@ -21,7 +21,7 @@ class Program
         Console.WriteLine("서버를 종료하려면 아무키나 입력하세요.");
         Console.ReadKey(true); // 입력한 키 값을 Hook해서 화면에 출력되지 않도록 하는 옵션
         
-        // TODO: 서버 정지로직 추가
-        Console.WriteLine("서버가 종료되었습니다.");
+        // 서버 정지로직 추가
+        server.StopServer();
     }
 }
