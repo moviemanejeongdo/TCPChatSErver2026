@@ -38,4 +38,19 @@ public class ChatServer
         
         Console.WriteLine($"서버가 정상적으로 실행되었습니다. 포트:{_port}");
     }
+    
+    // 서버 종료
+    public void StopServer()
+    {
+        if (!_isRunning)
+        {
+            return;
+        }
+
+        _isRunning = false;
+        _listener?.Stop();
+        _listener = null;
+        
+        Console.WriteLine("서버가 종료되었습니다.");
+    }
 }
