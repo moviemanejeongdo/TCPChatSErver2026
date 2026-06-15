@@ -18,6 +18,18 @@ public class ConnectedClient : IDisposable
     // 클라이언트 연결 여부
     public bool IsConnected => !_isDisposed && _client.Connected;
 
+    // 생성자
+    public ConnectedClient(TcpClient client)
+    {
+        _client = client;
+        _stream = client.GetStream();
+        
+        _clientId = _client.Client.RemoteEndPoint?.ToString() ?? Guid.NewGuid().ToString();
+        _isDisposed = false;
+        
+        Console.WriteLine($"[연결] 클라이언트가 접속했습니다.: {_clientId}");
+    }
+    
     public void Dispose()
     {
         if (_isDisposed) return;
