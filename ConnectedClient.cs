@@ -27,6 +27,8 @@ public class ConnectedClient : IDisposable
 
     // 메시지 수신 이벤트
     public event Action<ConnectedClient, string> MessageReceived;
+    // 연결 종료 이벤트
+    public event Action<string> Disconnected;
     
     // 생성자
     public ConnectedClient(TcpClient client)
@@ -57,7 +59,6 @@ public class ConnectedClient : IDisposable
                 // 연결이 끊어지면 null 반환
                 if (message == null)
                 {
-                    Console.WriteLine($"[연결종료] {_clientId}");
                     break;
                 }
                 
@@ -88,12 +89,13 @@ public class ConnectedClient : IDisposable
     {
         if (_isDisposed) return;
         _isDisposed = true;
+
+        // 연결 종료 이벤트 발행
+        Disconnected?.Invoke(_clientId);
         
         _reader.Dispose();
         _writer.Dispose();
         _stream.Dispose();
-        
         _client.Dispose();
-        _stream.Dispose();
     }
 }

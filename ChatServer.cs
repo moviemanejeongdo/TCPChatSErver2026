@@ -83,6 +83,8 @@ public class ChatServer
                 
                 // 메시지 수신 시 브로드캐스트를 위한 이벤트 연결(구독)
                 connectedClient.MessageReceived += OnMessageReceived;
+                // 접속 종료 이벤트 구독
+                connectedClient.Disconnected += OnClientDisconnected;
                 
                 // 클라이언트로 부터 메시지 수신 시작(비동기)
                 _ = Task.Run(connectedClient.ReceiveMessageAsync);
@@ -94,6 +96,19 @@ public class ChatServer
             {
                 Console.WriteLine(e.Message);
             }
+        }
+    }
+
+    private void OnClientDisconnected(string clientId)
+    {
+        // 딕셔너리에서 접속 해제된 클라이언트 정보 삭제
+        if (_connectedClients.TryRemove(clientId, out var client))
+        {
+            client.MessageReceived -= OnMessageReceived;
+            client.Disconnected -= OnClientDisconnected;
+            
+            Console.WriteLine($"[연결종료] 클라이언트 {client.ClientId}가 접속 종료되었습니다.");
+            Console.WriteLine($"[정보] 현재 접속한 클라이언트 수 : {_connectedClients.Count}");
         }
     }
 
