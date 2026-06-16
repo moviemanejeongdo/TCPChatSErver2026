@@ -5,7 +5,6 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <DefaultItemExcludes>$(DefaultItemExcludes);TCPChatClient\**;ChatClient\**;TCPChatServer\**</DefaultItemExcludes>
     </PropertyGroup>
 
 </Project>

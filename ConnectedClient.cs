@@ -68,9 +68,14 @@ public class ConnectedClient : IDisposable
                 Console.WriteLine($"[수신] {_clientId} : {message}");
             }
         }
+        catch (IOException)
+        {
+            // 클라이언트가 비정상적으로 연결을 끊었을 때 발생하는 예외는
+            // finally 블록의 Dispose() 및 접속 종료 이벤트에서 처리되므로 에러 로그를 출력하지 않습니다.
+        }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine($"[오류] {_clientId} : {e.Message}");
         }
         finally
         {
